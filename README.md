@@ -1,3 +1,15 @@
+NHFormatter: Rufus preconfigured for Homebrew
+==========================================
+
+Modifications to Rufus:
+-----------------------
+
+* Set optimal Cluster Size (try to use 32K if possible, else use the next largest)
+* Disable most of the controls
+* Change Application Name
+
+Here is the original README from Rufus:
+
 Rufus: The Reliable USB Formatting Utility
 ==========================================
 
