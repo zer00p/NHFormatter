@@ -5,6 +5,7 @@ Modifications to Rufus:
 -----------------------
 
 * Set optimal Cluster Size (try to use 32K if possible, else use the next largest)
+* Sets Label to NHBREW
 * Disable most of the controls
 * Change Application Name
 * Disable Update Check
