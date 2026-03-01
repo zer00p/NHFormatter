@@ -2841,8 +2841,9 @@ static INT_PTR CALLBACK MainCallback(HWND hDlg, UINT message, WPARAM wParam, LPA
 		EnableControls(TRUE, FALSE);
 		UpdateImage(FALSE);
 		// The AppStore version does not need the internal check for updates
-		if (!appstore_version)
-			CheckForUpdates(FALSE);
+		// NHMOD
+		//if (!appstore_version)
+		//	CheckForUpdates(FALSE);
 		// Register MEDIA_INSERTED/MEDIA_REMOVED notifications for card readers
 		if (SUCCEEDED(SHGetSpecialFolderLocation(0, CSIDL_DESKTOP, &pidlDesktop))) {
 			NotifyEntry.pidl = pidlDesktop;
