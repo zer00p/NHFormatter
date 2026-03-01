@@ -502,6 +502,15 @@ static BOOL SetFileSystemAndClusterSize(char* fs_name)
 			SelectedDrive.ClusterSize[FS_FAT16].Allowed <<= 1;
 		}
 		SelectedDrive.ClusterSize[FS_FAT16].Allowed &= 0x0001FE00;
+
+		// Use 32k as default. In case the device is to small use the largest allowed CS
+		ULONG defaultCS = 0x00008000;
+		if (defaultCS >= SelectedDrive.ClusterSize[FS_FAT16].Allowed) {
+			while (!(defaultCS & SelectedDrive.ClusterSize[FS_FAT16].Allowed) && defaultCS) {
+				defaultCS >>= 1;
+			}
+			SelectedDrive.ClusterSize[FS_FAT16].Default = defaultCS;
+		}
 	}
 
 	// FAT 32
@@ -533,6 +542,13 @@ static BOOL SetFileSystemAndClusterSize(char* fs_name)
 			SelectedDrive.ClusterSize[FS_FAT32].Allowed &= 0x0001C000;
 			SelectedDrive.ClusterSize[FS_FAT32].Default = 0x00008000;
 		}
+
+		// Use 32k as default. In case the device is to small use the largest allowed CS
+		ULONG defaultCS = 0x00008000;
+		while (!(defaultCS & SelectedDrive.ClusterSize[FS_FAT32].Allowed)) {
+			defaultCS >>= 1;
+		}
+		SelectedDrive.ClusterSize[FS_FAT32].Default = defaultCS;
 	}
 
 	if (SelectedDrive.DiskSize < 256 * TB) {
@@ -718,6 +734,9 @@ static void SetProposedLabel(int ComboIndex)
 	} else {
 		SetWindowTextU(hLabel, rufus_drive[ComboIndex].label);
 	}
+
+	// Set our label
+	SetWindowTextU(hLabel, "NHbrew");
 }
 
 static void EnableOldBiosFixes(BOOL enable, BOOL remove_checkboxes)
