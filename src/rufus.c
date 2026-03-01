@@ -2200,7 +2200,8 @@ static void InitDialog(HWND hDlg)
 	StrArrayCreate(&modified_files, 8);
 	// Set various checkboxes
 	CheckDlgButton(hDlg, IDC_QUICK_FORMAT, BST_CHECKED);
-	CheckDlgButton(hDlg, IDC_EXTENDED_LABEL, BST_CHECKED);
+	// NHMOD
+	CheckDlgButton(hDlg, IDC_EXTENDED_LABEL, BST_UNCHECKED);
 
 	CreateAdditionalControls(hDlg);
 	SetSectionHeaders(hDlg, &hSectionHeaderFont);
