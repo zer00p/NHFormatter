@@ -503,7 +503,7 @@ static BOOL SetFileSystemAndClusterSize(char* fs_name)
 		}
 		SelectedDrive.ClusterSize[FS_FAT16].Allowed &= 0x0001FE00;
 
-		// Use 32k as default. In case the device is to small use the largest allowed CS
+		// NHMOD: Use 32k as default. In case the device is to small use the largest allowed CS
 		ULONG defaultCS = 0x00008000;
 		if (defaultCS >= SelectedDrive.ClusterSize[FS_FAT16].Allowed) {
 			while (!(defaultCS & SelectedDrive.ClusterSize[FS_FAT16].Allowed) && defaultCS) {
@@ -543,7 +543,7 @@ static BOOL SetFileSystemAndClusterSize(char* fs_name)
 			SelectedDrive.ClusterSize[FS_FAT32].Default = 0x00008000;
 		}
 
-		// Use 32k as default. In case the device is to small use the largest allowed CS
+		// NHMOD: Use 32k as default. In case the device is to small use the largest allowed CS
 		ULONG defaultCS = 0x00008000;
 		while (!(defaultCS & SelectedDrive.ClusterSize[FS_FAT32].Allowed)) {
 			defaultCS >>= 1;
@@ -735,7 +735,7 @@ static void SetProposedLabel(int ComboIndex)
 		SetWindowTextU(hLabel, rufus_drive[ComboIndex].label);
 	}
 
-	// Set our label
+	// NHMOD: Set our label
 	SetWindowTextU(hLabel, "NHbrew");
 }
 
@@ -761,6 +761,8 @@ static void EnableOldBiosFixes(BOOL enable, BOOL remove_checkboxes)
 			state = 2;
 		}
 	}
+	// NHMOD
+	enable = FALSE;
 	EnableWindow(hCtrl, enable);
 }
 
@@ -803,6 +805,8 @@ static void EnableExtendedLabel(BOOL enable, BOOL remove_checkboxes)
 			state = 2;
 		}
 	}
+	//NHMOD
+	enable = FALSE;
 	EnableWindow(hCtrl, enable);
 }
 
@@ -833,12 +837,16 @@ static void EnableQuickFormat(BOOL enable, BOOL remove_checkboxes)
 			state = 2;
 		}
 	}
+	// NHMOD
+	enable = FALSE;
 	EnableWindow(hCtrl, enable);
 }
 
 static void EnableBootOptions(BOOL enable, BOOL remove_checkboxes)
 {
 	BOOL actual_enable_bb, actual_enable = enable;
+	// NHMOD
+	actual_enable = false;
 
 	// If no device is selected, don't enable anything and also don't remove the checkboxes
 	if (ComboBox_GetCurSel(hDeviceList) < 0) {
@@ -886,6 +894,12 @@ void EnableControls(BOOL enable, BOOL remove_checkboxes)
 	EnableWindow(hDeviceList, enable);
 	EnableWindow(hBootType, enable);
 	EnableWindow(hSelectImage, enable);
+
+	// NHMOD
+	EnableWindow(hBootType, FALSE);
+	boot_type = BT_NON_BOOTABLE;
+	EnableWindow(hSelectImage, FALSE);
+
 	EnableWindow(GetDlgItem(hMainDialog, IDC_LIST_USB_HDD), enable);
 	EnableWindow(hAdvancedDeviceToolbar, enable);
 	EnableWindow(hAdvancedFormatToolbar, enable);
@@ -912,6 +926,10 @@ void EnableControls(BOOL enable, BOOL remove_checkboxes)
 	// Finally, only enable the half-size dropdowns if we aren't dealing with a pure DD image
 	enable = ((boot_type == BT_IMAGE) && (image_path != NULL) &&
 		(!(img_report.is_iso || img_report.is_windows_img))) ? FALSE : enable;
+
+	// NHMOD
+	enable = FALSE;
+
 	EnableWindow(hPartitionScheme, enable);
 	EnableWindow(hTargetSystem, enable);
 	EnableWindow(GetDlgItem(hMainDialog, IDS_CSM_HELP_TXT), enable);
