@@ -596,6 +596,13 @@ static BOOL SetFileSystemAndClusterSize(char* fs_name)
 
 	// Only add the filesystems we can service
 	SetAllowedFileSystems();
+
+	// NHMOD: If the device is too small to use 32KiB clusters on FAT32, then we should use FAT16 with 32KiB clusters
+	if ((SelectedDrive.ClusterSize[FS_FAT16].Allowed & 0x00008000) &&
+	    !(SelectedDrive.ClusterSize[FS_FAT32].Allowed & 0x00008000)) {
+		allowed_filesystem[FS_FAT32] = FALSE;
+	}
+
 	SetClusterSizeLabels();
 
 	for (fs_index = 0; fs_index < FS_MAX; fs_index++) {
